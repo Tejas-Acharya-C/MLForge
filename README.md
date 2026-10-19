@@ -61,8 +61,18 @@ All architectural specifications, scientific methodologies, contracts, design sy
 
 ### Prerequisites
 - **Python**: 3.11+
-- **Node.js**: v20+ (LTS) or v22+
+- **Node.js**: v20+ (LTS) or v22+ (for upcoming Phase 5 frontend)
 - **Git**: 2.40+
+
+### Installation
+Install MLForge in editable mode with development dependencies:
+```bash
+python -m pip install -e . --no-deps
+```
+Or with development packages:
+```bash
+python -m pip install -e ".[dev]"
+```
 
 ### Environment Configuration
 Copy the sample environment file before running any services:
@@ -70,17 +80,97 @@ Copy the sample environment file before running any services:
 cp .env.example .env
 ```
 
-*Note on Database*: In Phase 1 and 2, MLForge utilizes direct local evaluation without requiring an external database. When persistence is introduced in Phase 4, MLForge will maintain its own dedicated database (default SQLite fallback, or PostgreSQL `mlforge_db`) strictly separated from any existing services like DataFlow.
+---
+
+## 5. Offline CLI Usage
+
+MLForge provides a minimal, offline command-line interface with zero network dependencies:
+
+### Verify Audit Bundle
+Verify ZIP archive integrity, manifest conformity, CRC-32 checksums, and resource bounds:
+```bash
+mlforge verify-bundle <bundle_path.zip>
+# Or via python -m:
+python -m mlforge verify-bundle <bundle_path.zip>
+```
+
+### Verify Release Authorization
+Verify an Ed25519 release certificate against cryptographic signatures, explicit signer trust, and physical evaluation evidence:
+```bash
+# With explicit public key hex (64 hex characters):
+mlforge verify-release <run_dir_or_bundle.zip> --public-key <64_char_hex>
+
+# With trusted keys registry file:
+mlforge verify-release <run_dir_or_bundle.zip> --trusted-keys-file <path_to_keys.json>
+```
+
+**Security & Trust Rules:**
+- Exit code `0`: Release authorized (all 4 verification tiers passed: payload integrity, signature validity, signer trust, and evidence consistency).
+- Exit code `1`: Verification failed (invalid signature, untrusted key, tampered evidence, or blocked gate).
+- Exit code `2`: Usage or file-not-found error.
+- **Fail-Closed Signer Trust**: A valid signature from an untrusted or missing key always fails release authorization (never returns exit code 0).
+- **Zero Model Deserialization**: CLI verification verifies model digests via streaming SHA-256 without calling `joblib.load` or `pickle.load`.
 
 ---
 
-## 5. Phase 1 Definition of Done Checklist
+## 6. Running Tests & Benchmarks
 
-- [x] Strict dependency direction established (`Frontend -> API -> Engine`).
-- [x] Scientific evaluation methodology formalized (leakage prevention, fold preservation, statistical significance testing).
-- [x] Versioned data contracts defined for configs, results, diagnostics, and acceptance.
-- [x] Six core frontend screens specified with URL states, error boundaries, and empty states.
-- [x] Anti-AI design tokens and engineering manual documented.
-- [x] Comprehensive test matrix specified.
-- [x] Phase 2 implementation plan detailed into actionable milestones.
-- [x] Zero empty module proliferation, premature DB migrations, or pseudo-implementations.
+### Full Test Suite
+Run the full test suite with standard pytest:
+```bash
+python -m pytest -v
+```
+
+### Performance Benchmarks
+Run the unified benchmark suite across classification (Milestone 2.6), robustness (Milestone 3.4), and Phase 4 lifecycle/persistence/packaging (Milestone 4.5):
+```bash
+python -m benchmarks.runner
+```
+*Memory Methodology Note*: Memory measurements report peak traced Python heap allocations via standard library `tracemalloc`. This reflects heap allocations and excludes OS process RSS, native C/C++ buffers, and memory-mapped files.
+
+---
+
+## 7. Interactive ML Experimentation Laboratory (Phase 5)
+
+MLForge Phase 5 provides an interactive, dense, technical web application connecting directly to the local FastAPI backend.
+
+### Starting the Local Laboratory
+
+1. **Start the Backend API Core:**
+   ```bash
+   python -m mlforge serve --host 127.0.0.1 --port 8000
+   ```
+   *The REST API will be available at `http://127.0.0.1:8000/api/v1` with documentation at `http://127.0.0.1:8000/docs`.*
+
+2. **Start the Frontend Application:**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
+   *The interactive lab will open at `http://localhost:5173`.*
+
+### Available Laboratory Workflows
+
+- **Lab Overview (`/`)**: Comprehensive ledger of all evaluation runs recorded in local SQLite persistence. Filter by state (`completed`, `running`, `failed`, `cancelled`), inspect Macro F1 with 95% confidence intervals, and review acceptance outcomes.
+- **New Evaluation (`/new`)**: Configure dataset parameters (CSV/Parquet file paths or built-in benchmarks like Customer Churn or Breast Cancer), inspect schema and class distributions, configure model hyperparameters (C, solver, penalty, max iterations), tune stratified cross-validation folds, select policy templates, and execute evaluations with live preflight summaries.
+- **Evaluation Results (`/results`)**: Empirical performance comparison against dummy baseline across primary and secondary metrics. Includes $\mu \pm \sigma$, 95% confidence intervals, relative $\Delta$, corrected resampled t-test p-values, cross-validation fold stability distributions, and side-by-side confusion matrices.
+- **Reliability & Robustness Laboratory (`/reliability`)**: Deep diagnostic analysis of posterior calibration (Expected Calibration Error, Brier score, reliability diagram with 10 confidence bins), subgroup slice disparities across sensitive or demographic cohorts, and live perturbation stress testing (Gaussian noise, missingness, label inversion) with Area Under Retention Degradation Curve (AURDC).
+- **Run Details & Artifact Ledger (`/details`)**: Inspect physical disk artifacts, file sizes, and SHA-256 digests. View environment reproducibility manifests, launch standalone offline HTML audit reports, and generate `.zip` audit bundles.
+- **Release Readiness & Cryptographic Verification (`/acceptance`)**: Strict 6-state release governance dashboard evaluating criteria rules, blocking failures, and issuing tamper-evident Ed25519 digital certificates with cryptographic signature and manifest verification.
+
+---
+
+## 8. Implementation Progress & Checklist
+
+- [x] **Phase 1**: Architecture, Data Contracts & Design System.
+- [x] **Phase 2**: Classification Evaluation Increment (leakage-safe stratified CV, baseline contrast, statistics, calibration).
+- [x] **Phase 3**: Robustness & Stress Testing Engine (perturbation profiles, AURDC, retention metrics).
+- [x] **Phase 4**: Persistence, Offline Reporting, Security & Packaging:
+  - [x] Milestone 4.1: Fitted Model Serialization & Audit Bundle Packaging.
+  - [x] Milestone 4.2: Self-Contained Offline HTML Audit Reports.
+  - [x] Milestone 4.3: Automated Release Gates & Ed25519 Cryptographic Certificates.
+  - [x] Milestone 4.4: Local SQLite Persistence & Run Lifecycle State Machine.
+  - [x] Milestone 4.5: Phase 4 Verification, Packaging Hardening, CLI & Benchmarks.
+- [x] **Phase 5**: Interactive ML Experimentation Laboratory (FastAPI REST Core, React 18, TypeScript, Vite, Scientific Design System).
+- [x] **Phase 6**: System Hardening & End-to-End Verification (Cryptographic trust decoupling, API & filesystem confinement, offline UI hardening, complete test verification).

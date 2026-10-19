@@ -1,9 +1,7 @@
 # MLForge — Design System & Anti-AI Engineering Manual
 
-**Document Version:** 1.0.0  
-**Phase:** 1 (Foundation & Architecture)  
-**Target Implementation:** Phase 5  
-**Status:** Approved Specification  
+**Document Version:** 2.0.0
+**Status:** Implemented & Active Design System
 
 ---
 
@@ -59,6 +57,20 @@ MLForge is designed as a **precision scientific instrument** for machine learnin
   --color-status-inconclusive-bg: #fffbeb;
   --color-status-inconclusive-border: #fde68a;
   --color-status-inconclusive-text: #92400e;
+
+  /* Harmonized Semantic Aliases */
+  --color-emerald: #059669;
+  --color-emerald-bg: #ecfdf5;
+  --color-emerald-border: #a7f3d0;
+  --color-crimson: #dc2626;
+  --color-crimson-bg: #fef2f2;
+  --color-crimson-border: #fecaca;
+  --color-amber: #d97706;
+  --color-amber-bg: #fffbeb;
+  --color-amber-border: #fde68a;
+  --color-stone-surface: #f8fafc;
+  --color-stone-border: #e2e8f0;
+  --color-stone-bg: #f1f5f9;
 
   /* Information / Scientific Focus */
   --color-accent-primary: #1e3a8a;       /* Deep scientific navy */

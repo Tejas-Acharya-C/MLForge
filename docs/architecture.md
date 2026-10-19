@@ -1,8 +1,7 @@
 # MLForge — Architecture & System Design
 
-**Document Version:** 1.0.0  
-**Phase:** 1 (Foundation & Architecture)  
-**Status:** Approved Specification  
+**Document Version:** 2.0.0
+**Status:** Implemented & Active Specification
 
 ---
 
@@ -74,9 +73,9 @@ The codebase is partitioned into distinct subpackages with explicit responsibili
 ### D. API Layer (`mlforge.api`)
 - **FastAPI Endpoints:** HTTP routing, query filtering, request payload validation, HTTP status codes, and error responses.
 
-### E. Infrastructure & Persistence Layer (`mlforge.infrastructure`)
-- **Database Adapters:** SQL persistence for run metadata, configuration snapshots, and summary metrics.
-- **Filesystem Storage:** Directory structure management under `artifacts/` for binary and JSON evaluation dumps.
+### E. Application Persistence & Artifact Layer (`mlforge.application.persistence`)
+- **Database Repositories:** SQLite persistence for run metadata, configuration snapshots, lifecycle audit trails, and summary metrics.
+- **Filesystem Storage:** Directory structure management under `artifacts/` for binary models and JSON evaluation dumps.
 
 ---
 

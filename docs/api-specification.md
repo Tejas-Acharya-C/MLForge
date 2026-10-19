@@ -1,12 +1,11 @@
 # MLForge — REST API Specification
 
-**Document Version:** 1.0.0  
-**Phase:** 1 (Foundation & Architecture)  
-**Base URL:** `http://127.0.0.1:8000/api/v1`  
-**Status:** Preliminary Specification (Target Implementation: Phase 4)  
+**Document Version:** 2.0.0
+**Base URL:** `http://127.0.0.1:8000/api/v1`
+**Status:** Implemented & Active Specification
 
 > [!NOTE]
-> This document formalizes the planned HTTP endpoints, payload schemas, query parameters, status transitions, and error behaviors for the FastAPI application layer. In accordance with Phase 1 scope, these endpoints are specifications and are not yet implemented in code.
+> This document formalizes the active HTTP endpoints, payload schemas, query parameters, status transitions, and error behaviors for the MLForge FastAPI application layer (`mlforge/api/routes.py`). All documented endpoints are implemented, tested, and actively consumed by the frontend laboratory.
 
 ---
 

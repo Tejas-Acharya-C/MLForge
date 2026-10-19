@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlforge"
+version = "0.1.0"
+description = "Local-first AI Model Evaluation & Reliability Lab for tabular classification"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    { name = "MLForge Team" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "scikit-learn>=1.3.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0",
+    "cryptography>=41.0.0",
+    "pydantic>=2.0.0",
+    "joblib>=1.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+]
+
+[project.scripts]
+mlforge = "mlforge.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["mlforge*", "benchmarks*"]
